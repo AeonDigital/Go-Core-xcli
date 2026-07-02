@@ -35,10 +35,14 @@ To eliminate technical debt, code duplication, and configuration drift across th
 &nbsp;
 
 
-### 2.1 Native Cloud Inheritance
+### 2.1 Native Cloud Inheritance & Dynamic Bootstrapping
 
-The automation pipeline orchestrator (`.github/workflows/main.yml`) contains zero local procedural code or embedded console scripts. 
-It operates strictly as an interface that calls the upstream central engine via the GitHub Actions native `workflow_call` protocol.
+The local automation pipeline orchestrator (`.github/workflows/main.yml`) contains zero embedded console scripts. It operates strictly as a declarative interface that calls the upstream central engine via the GitHub Actions native `workflow_call` protocol.
+
+&nbsp;
+
+Upon initialization, the cloud runner executes a specialized bootstrap module fetched from the master hub. 
+This component dynamically provisions the shared bash and script modules into the running container workspace, mimicking a local `.github/` deployment structure for the duration of the job run while **ensuring zero infrastructure execution files clutter this repository on your workstation**.
 
 
 &nbsp;
