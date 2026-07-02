@@ -1,0 +1,12 @@
+name: Go-Core Executable Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  central-pipeline:
+    uses: AeonDigital/Go-Core-Template-CI-CD/.github/workflows/ci-cd.yaml@main
