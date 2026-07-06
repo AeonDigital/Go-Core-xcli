@@ -3,7 +3,7 @@ Go-Core-xcli
 
 ![Go Test Coverage](https://raw.githubusercontent.com/github.com/AeonDigital/Go-Core-xcli/badges/.badges/main/coverage.svg)
 
-> [Aeon Digital](http://www.aeondigital.com.br)
+> [Aeon Digital](https://aeondigital.com.br)
 > rianna@aeondigital.com.br
 
 &nbsp;
