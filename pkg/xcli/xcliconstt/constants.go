@@ -29,6 +29,7 @@ const (
 
 	TypeString FlagType = "string"
 	TypeInt    FlagType = "int"
+	TypeInt64  FlagType = "int64"
 	TypeFloat  FlagType = "float"
 	TypeBool   FlagType = "bool"
 
@@ -61,6 +62,7 @@ const (
 
 	TypeStringArray FlagType = "[]string"
 	TypeIntArray    FlagType = "[]int"
+	TypeInt64Array  FlagType = "[]int64"
 	TypeFloatArray  FlagType = "[]float"
 	TypeBoolArray   FlagType = "[]bool"
 

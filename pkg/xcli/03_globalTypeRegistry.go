@@ -26,6 +26,10 @@ var GlobalTypeRegistry = map[xcliconstt.FlagType]xcliintfc.ValueParser{
 		Parser:         xclifn.ParseInt,
 		LimitValidator: xclifn.ValidateNumberLimits[int],
 	},
+	xcliconstt.TypeInt64: TypedDescriptor[int64]{
+		Parser:         xclifn.ParseInt64,
+		LimitValidator: xclifn.ValidateNumberLimits[int64],
+	},
 	xcliconstt.TypeFloat: TypedDescriptor[float64]{
 		Parser:         xclifn.ParseFloat,
 		LimitValidator: xclifn.ValidateNumberLimits[float64],

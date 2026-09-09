@@ -63,7 +63,27 @@ func TestParsePrimitivosSuccessAndErrors(t *testing.T) {
 		}
 	}
 
-	// 3. Validate ParseFloat variations
+	// 3. Validate ParseInt64 variations
+	in64Cases := []struct {
+		input    string
+		expected int
+		hasErr   bool
+	}{
+		{" 7776665554443332221  ", 7776665554443332221, false},
+		{"-7776665554443332221", -7776665554443332221, false},
+		{"not_a_number", 0, true},
+	}
+	for _, tc := range in64Cases {
+		res, err := xclifn.ParseInt64(tc.input)
+		if tc.hasErr && err == nil {
+			t.Errorf("ParseInt64(%q) expected error, got nil", tc.input)
+		}
+		if !tc.hasErr && (err != nil || res != int64(tc.expected)) {
+			t.Errorf("ParseInt64(%q) expected %d, got %d", tc.input, tc.expected, res)
+		}
+	}
+
+	// 4. Validate ParseFloat variations
 	floatCases := []struct {
 		input    string
 		expected float64

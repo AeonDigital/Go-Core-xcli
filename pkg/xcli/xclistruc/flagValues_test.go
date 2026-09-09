@@ -20,6 +20,7 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	// Primitive Types Data
 	ctx.SetInternalValue("v_string", "GoCLI")
 	ctx.SetInternalValue("v_int", 42)
+	ctx.SetInternalValue("v_int64", 777666555444333222)
 	ctx.SetInternalValue("v_float", 3.14)
 	ctx.SetInternalValue("v_bool", true)
 
@@ -44,6 +45,7 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	// Array / Slice Formats
 	ctx.SetInternalValue("v_string_arr", []string{"A", "B"})
 	ctx.SetInternalValue("v_int_arr", []int{1, 2})
+	ctx.SetInternalValue("v_int64_arr", []int64{7776665554443332221, 1222333444555666777})
 	ctx.SetInternalValue("v_float_arr", []float64{1.1, 2.2})
 	ctx.SetInternalValue("v_bool_arr", []bool{true, false})
 	ctx.SetInternalValue("v_duration_arr", []time.Duration{1 * time.Second})
@@ -92,6 +94,17 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	}
 	if ctx.GetInt("v_string") != 0 {
 		t.Errorf("invalid type assertion for int must fallback to 0")
+	}
+
+	// GetInt64
+	if ctx.GetInt64("v_int64") != 777666555444333222 {
+		t.Errorf("expected 777666555444333222, got %d", ctx.GetInt64("v_int64"))
+	}
+	if ctx.GetInt64("missing_key") != 0 {
+		t.Errorf("absent 64 bits integer key must return 0")
+	}
+	if ctx.GetInt64("v_string") != 0 {
+		t.Errorf("invalid type assertion for 64 bits integer must fallback to 0")
 	}
 
 	// GetFloat
@@ -304,6 +317,17 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	}
 	if ctx.GetIntSlice("v_string") != nil {
 		t.Errorf("error on GetIntSlice fallback")
+	}
+
+	// GetInt64Slice
+	if len(ctx.GetInt64Slice("v_int64_arr")) != 2 {
+		t.Errorf("error on GetInt64Slice")
+	}
+	if ctx.GetInt64Slice("missing_key") != nil {
+		t.Errorf("error on GetInt64Slice empty")
+	}
+	if ctx.GetInt64Slice("v_string") != nil {
+		t.Errorf("error on GetInt64Slice fallback")
 	}
 
 	// GetFloatSlice

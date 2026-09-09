@@ -49,6 +49,7 @@ type ValueParser interface {
 
 // Quantifiable defines the strict set of types capable of undergoing inclusive
 // mathematical boundary evaluation tracks within the xcli routing motor.
+// time.Duration is within the ~int64 definition!
 type Quantifiable interface {
-	~int | ~float64 | time.Duration | time.Time
+	~int | ~int64 | ~float64 | time.Time
 }

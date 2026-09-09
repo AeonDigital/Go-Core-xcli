@@ -1,6 +1,9 @@
 package xclistruc
 
-import "time"
+import (
+	"reflect"
+	"time"
+)
 
 // Context holds the completely parsed, converted, and validated flag values
 // for the currently executing command.
@@ -59,6 +62,27 @@ func (c *FlagValues) GetInt(name string) int {
 	if val, exists := c.values[name]; exists {
 		if intVal, ok := val.(int); ok {
 			return intVal
+		}
+	}
+	return 0
+}
+
+// GetInt64 returns the value of an 64 bits integer flag.
+//
+// Returns 0 if the flag is absent or is not an 64 bits integer type.
+func (c *FlagValues) GetInt64(name string) int64 {
+	if val, exists := c.values[name]; exists {
+		v := reflect.ValueOf(val)
+		k := v.Kind()
+
+		if k == reflect.Int || k == reflect.Int64 {
+			var r int64
+
+			if k == reflect.Int {
+				r = v.Int()
+			}
+
+			return r
 		}
 	}
 	return 0
@@ -238,6 +262,18 @@ func (c *FlagValues) GetStringSlice(name string) []string {
 func (c *FlagValues) GetIntSlice(name string) []int {
 	if val, exists := c.values[name]; exists {
 		if sliceVal, ok := val.([]int); ok {
+			return sliceVal
+		}
+	}
+	return nil
+}
+
+// GetInt64Slice returns the value of an 64 bits integer array flag.
+//
+// Returns nil if the flag is absent or is not a []int64 type.
+func (c *FlagValues) GetInt64Slice(name string) []int64 {
+	if val, exists := c.values[name]; exists {
+		if sliceVal, ok := val.([]int64); ok {
 			return sliceVal
 		}
 	}

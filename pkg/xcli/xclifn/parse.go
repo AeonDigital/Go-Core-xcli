@@ -70,6 +70,27 @@ func ParseInt(val string) (int, error) {
 	return res, nil
 }
 
+// ParseInt64 converts a raw string flag value into a native Go 64 bits integer.
+//
+// Arguments:
+//   - val: The raw string representation from the terminal.
+//
+// Returns:
+//   - int64: The parsed 64 bits integer primitive.
+//   - error: Returns an xerrors.IErrorCLI if the conversion fails.
+//
+// Error & Panic Natures:
+//   - Complex Errors: Returns an error if the string contains non-numeric characters.
+func ParseInt64(val string) (int64, error) {
+	clean := strings.TrimSpace(val)
+	res, err := strconv.ParseInt(clean, 10, 64)
+	if err != nil {
+		return 0, xerrors.NewErrorCLI().
+			SetMessage("invalid 64 bits integer value: '%s'", val)
+	}
+	return res, nil
+}
+
 // ParseFloat converts a raw string flag value into a native Go float64.
 //
 // Arguments:
