@@ -517,3 +517,58 @@ func TestSetInternalValueWithNilMap(t *testing.T) {
 		t.Errorf("expected to retrieve 'success', got '%s'", ctx.GetString("lazy_init"))
 	}
 }
+
+// TestFlagWithDescription verifies that WithDescription applies the given
+// texts on a new Flag copy while leaving the original instance untouched.
+func TestFlagWithDescription(t *testing.T) {
+	original := xclistruc.Flag{
+		LongName:         "output",
+		ShortDescription: "old short",
+		LongDescription:  "old long",
+	}
+
+	updated := original.WithDescription("new short", "new long")
+
+	if updated.ShortDescription != "new short" || updated.LongDescription != "new long" {
+		t.Errorf("expected descriptions to be updated on the returned copy, got %+v", updated)
+	}
+	if original.ShortDescription != "old short" || original.LongDescription != "old long" {
+		t.Errorf("expected original Flag to remain unchanged, got %+v", original)
+	}
+}
+
+// TestFlagWithRequired verifies that WithRequired toggles the Required flag
+// on a new Flag copy while leaving the original instance untouched.
+func TestFlagWithRequired(t *testing.T) {
+	original := xclistruc.Flag{
+		LongName: "output",
+		Required: false,
+	}
+
+	updated := original.WithRequired(true)
+
+	if !updated.Required {
+		t.Errorf("expected returned copy to have Required=true")
+	}
+	if original.Required {
+		t.Errorf("expected original Flag to remain unchanged with Required=false")
+	}
+}
+
+// TestFlagWithDefaultValue verifies that WithDefaultValue replaces the
+// DefaultValue on a new Flag copy while leaving the original instance untouched.
+func TestFlagWithDefaultValue(t *testing.T) {
+	original := xclistruc.Flag{
+		LongName:     "output",
+		DefaultValue: "old-value",
+	}
+
+	updated := original.WithDefaultValue("new-value")
+
+	if updated.DefaultValue != "new-value" {
+		t.Errorf("expected returned copy to have DefaultValue='new-value', got %v", updated.DefaultValue)
+	}
+	if original.DefaultValue != "old-value" {
+		t.Errorf("expected original Flag to remain unchanged with DefaultValue='old-value', got %v", original.DefaultValue)
+	}
+}

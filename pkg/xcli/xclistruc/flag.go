@@ -73,3 +73,29 @@ type Flag struct {
 	// If left empty, the router will skip permission checks and only validate syntax/existence.
 	Access xcliconstt.AccessMode
 }
+
+// WithDescription returns a new Flag copy with the short and long descriptions replaced.
+func (f Flag) WithDescription(
+	shortDescription string,
+	longDescription string,
+) Flag {
+	f.ShortDescription = shortDescription
+	f.LongDescription = longDescription
+	return f
+}
+
+// WithRequired returns a new Flag copy with the Required constraint replaced.
+func (f Flag) WithRequired(
+	required bool,
+) Flag {
+	f.Required = required
+	return f
+}
+
+// WithDefaultValue returns a new Flag copy with the DefaultValue replaced.
+func (f Flag) WithDefaultValue(
+	defaultValue any,
+) Flag {
+	f.DefaultValue = defaultValue
+	return f
+}
