@@ -1,7 +1,6 @@
 package xclistruc
 
 import (
-	"reflect"
 	"time"
 )
 
@@ -72,17 +71,11 @@ func (c *FlagValues) GetInt(name string) int {
 // Returns 0 if the flag is absent or is not an 64 bits integer type.
 func (c *FlagValues) GetInt64(name string) int64 {
 	if val, exists := c.values[name]; exists {
-		v := reflect.ValueOf(val)
-		k := v.Kind()
-
-		if k == reflect.Int || k == reflect.Int64 {
-			var r int64
-
-			if k == reflect.Int {
-				r = v.Int()
-			}
-
-			return r
+		if intVal, ok := val.(int); ok {
+			return int64(intVal)
+		}
+		if int64Val, ok := val.(int64); ok {
+			return int64Val
 		}
 	}
 	return 0

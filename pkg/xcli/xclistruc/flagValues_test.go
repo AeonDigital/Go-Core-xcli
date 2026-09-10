@@ -21,6 +21,7 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	ctx.SetInternalValue("v_string", "GoCLI")
 	ctx.SetInternalValue("v_int", 42)
 	ctx.SetInternalValue("v_int64", 777666555444333222)
+	ctx.SetInternalValue("v_int64v2", int64(777666555444333111))
 	ctx.SetInternalValue("v_float", 3.14)
 	ctx.SetInternalValue("v_bool", true)
 
@@ -99,6 +100,9 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	// GetInt64
 	if ctx.GetInt64("v_int64") != 777666555444333222 {
 		t.Errorf("expected 777666555444333222, got %d", ctx.GetInt64("v_int64"))
+	}
+	if ctx.GetInt64("v_int64v2") != 777666555444333111 {
+		t.Errorf("expected 777666555444333222, got %d", ctx.GetInt64("v_int64v2"))
 	}
 	if ctx.GetInt64("missing_key") != 0 {
 		t.Errorf("absent 64 bits integer key must return 0")
