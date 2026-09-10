@@ -13,6 +13,8 @@ import (
 // Each command forms an isolated scope and executes its own business logic.
 type Command struct {
 	// Name is the string that triggers this command in the terminal.
+	// It is automatically defined by the respective key that identifies it
+	// when dealing with a subcommand.
 	Name string
 
 	// ShortDescription is a brief one-line summary used in general help listings.
@@ -148,7 +150,8 @@ func (c *Command) TriggerHelp() error {
 	// Render Available Subcommands if the command has children
 	if len(c.Subcommands) > 0 {
 		xclifn.PrintStdout("\nAvailable Subcommands:")
-		for _, sub := range c.Subcommands {
+		for cname, sub := range c.Subcommands {
+			sub.Name = cname
 			xclifn.PrintStdout("  %-15s %s", sub.Name, sub.ShortDescription)
 		}
 		xclifn.PrintStdout("")

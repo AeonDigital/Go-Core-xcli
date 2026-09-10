@@ -47,6 +47,8 @@ func (r *Router) Run(rawArgs []string) error {
 		}
 
 		if nextCmd, exists := currentCmd.Subcommands[arg]; exists {
+			nextCmd.Name = arg
+
 			currentCmd = nextCmd
 			argIndex++
 			continue
