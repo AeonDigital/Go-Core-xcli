@@ -518,6 +518,23 @@ func TestSetInternalValueWithNilMap(t *testing.T) {
 	}
 }
 
+// TestFlagValuesCount verifies that Count reports the number of flags
+// actually stored, including the zero-count case for an empty container.
+func TestFlagValuesCount(t *testing.T) {
+	ctx := xclistruc.NewFlagValues()
+
+	if ctx.Count() != 0 {
+		t.Errorf("expected Count() to be 0 for an empty container, got %d", ctx.Count())
+	}
+
+	ctx.SetInternalValue("output", "file.txt")
+	ctx.SetInternalValue("verbose", true)
+
+	if ctx.Count() != 2 {
+		t.Errorf("expected Count() to be 2, got %d", ctx.Count())
+	}
+}
+
 // TestFlagWithDescription verifies that WithDescription applies the given
 // texts on a new Flag copy while leaving the original instance untouched.
 func TestFlagWithDescription(t *testing.T) {

@@ -38,6 +38,11 @@ func (c *FlagValues) Has(name string) bool {
 	return exists
 }
 
+// Count return the total flags defined by the user in the terminal
+func (c *FlagValues) Count() int {
+	return len(c.values)
+}
+
 // ============================================================================
 // 1. PRIMITIVE TYPES GETTERS
 // ============================================================================
