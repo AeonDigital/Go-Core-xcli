@@ -30,6 +30,14 @@ func (c *FlagValues) SetInternalValue(name string, val any) {
 	c.values[name] = val
 }
 
+// SetInternalValues replaces all internal flag values with the supplied map.
+//
+// Arguments:
+//   - values: The map containing the complete set of computed flag values.
+func (c *FlagValues) SetInternalValues(values map[string]any) {
+	c.values = values
+}
+
 // Has checks if a specific flag was explicitly provided by the user in the terminal.
 //
 // Useful to differentiate between a flag omitted (using default) and one explicitly sent.

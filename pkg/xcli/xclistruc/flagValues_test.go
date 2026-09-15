@@ -7,6 +7,29 @@ import (
 	"github.com/AeonDigital/Go-Core-xcli/pkg/xcli/xclistruc"
 )
 
+func TestFlagValuesSetInternalValues(t *testing.T) {
+	ctx := xclistruc.NewFlagValues()
+	ctx.SetInternalValue("previous", "value")
+
+	ctx.SetInternalValues(map[string]any{
+		"name":  "GoCLI",
+		"count": 42,
+	})
+
+	if ctx.Has("previous") {
+		t.Error("expected previous values to be replaced")
+	}
+	if ctx.Count() != 2 {
+		t.Errorf("expected 2 values, got %d", ctx.Count())
+	}
+	if ctx.GetString("name") != "GoCLI" {
+		t.Errorf("expected GoCLI, got %q", ctx.GetString("name"))
+	}
+	if ctx.GetInt("count") != 42 {
+		t.Errorf("expected 42, got %d", ctx.GetInt("count"))
+	}
+}
+
 // TestFlagValuesLifecycle enforces full verification across the entire reading API
 // processing valid entries, incorrect type assertions, and missing key triggers.
 func TestFlagValuesLifecycle(t *testing.T) {
