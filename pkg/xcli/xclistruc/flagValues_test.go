@@ -41,7 +41,7 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	// ------------------------------------------------------------------------
 
 	// Primitive Types Data
-	ctx.SetInternalValue("v_string", "GoCLI")
+	ctx.SetInternalValue("v_string", " GoCLI ")
 	ctx.SetInternalValue("v_int", 42)
 	ctx.SetInternalValue("v_int64", 777666555444333222)
 	ctx.SetInternalValue("v_int64v2", int64(777666555444333111))
@@ -97,6 +97,11 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	// ============================================================================
 	// 1. PRIMITIVE TYPES VERIFICATION TRACKS
 	// ============================================================================
+
+	// GetRawString
+	if ctx.GetRawString("v_string") != " GoCLI " {
+		t.Errorf("expected ' GoCLI ' (with spaces), got '%s'", ctx.GetRawString("v_string"))
+	}
 
 	// GetString
 	if ctx.GetString("v_string") != "GoCLI" {

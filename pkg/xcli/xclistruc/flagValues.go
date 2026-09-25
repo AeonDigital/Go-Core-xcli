@@ -1,6 +1,7 @@
 package xclistruc
 
 import (
+	"strings"
 	"time"
 )
 
@@ -55,10 +56,17 @@ func (c *FlagValues) Count() int {
 // 1. PRIMITIVE TYPES GETTERS
 // ============================================================================
 
-// GetString returns the value of a string flag.
+// GetString returns the value of a string flag with surrounding whitespace removed.
 //
 // Returns empty string if the flag is absent or is not a string type.
 func (c *FlagValues) GetString(name string) string {
+	return strings.TrimSpace(c.GetRawString(name))
+}
+
+// GetRawString returns the original value of a string flag without any modification.
+//
+// Returns empty string if the flag is absent or is not a string type.
+func (c *FlagValues) GetRawString(name string) string {
 	if val, exists := c.values[name]; exists {
 		if strVal, ok := val.(string); ok {
 			return strVal
