@@ -42,20 +42,25 @@ func (r *Router) Run(rawArgs []string) error {
 			break
 		}
 
-		if arg == "help" || arg == "--help" || arg == "-h" {
+		if arg == "help" {
 			return currentCmd.TriggerHelp()
 		}
 
-		if nextCmd, exists := currentCmd.Subcommands[arg]; exists {
-			nextCmd.Name = arg
+		match := false
+		for _, subCMD := range currentCmd.Subcommands {
+			if subCMD.Name == arg {
+				subCMD.CMD.Name = arg
 
-			currentCmd = nextCmd
-			argIndex++
-			continue
+				currentCmd = subCMD.CMD
+				argIndex++
+				match = true
+			}
 		}
 
-		return xerrors.NewErrorCLI().
-			SetMessage("unknown command: '%s' for scope '%s'", arg, currentCmd.Name)
+		if !match {
+			return xerrors.NewErrorCLI().
+				SetMessage("unknown command: '%s' for scope '%s'", arg, currentCmd.Name)
+		}
 	}
 
 	for _, remainingArg := range rawArgs[argIndex:] {

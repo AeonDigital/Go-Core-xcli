@@ -126,10 +126,13 @@ func TestCommandTriggerHelpEnforcesFullVisualRender(t *testing.T) {
 		Name:             "main-app",
 		ShortDescription: "Core engine initialization",
 		LongDescription:  "Detailed technical scope documentation for the terminal operator.",
-		Subcommands: map[string]*xcli.Command{
-			"start": {
-				Name:             "start",
-				ShortDescription: "Boot up system daemons",
+		Subcommands: []*xcli.SubCommand{
+			{
+				Name: "start",
+				CMD: &xcli.Command{
+					Name:             "start",
+					ShortDescription: "Boot up system daemons",
+				},
 			},
 		},
 		Flags: []xclistruc.Flag{

@@ -27,13 +27,24 @@ type Command struct {
 	// Flags is the list of exclusive options accepted strictly by this command.
 	Flags []xclistruc.Flag
 
-	// Subcommands holds the next layer of commands, indexed by their execution Name.
-	// Due to context isolation, children do not inherit flags from their parents.
-	Subcommands map[string]*Command
+	// Subcommands manages the next sequential layer of nested child commands organized as an
+	// ordered slice to guarantee predictable and deterministic layout rendering inside help listings.
+	Subcommands []*SubCommand
 
 	// Run is the execution hook containing the command's business logic.
 	// It receives the Context containing all parsed, typed, and validated flags.
 	Run func(ctx *xclistruc.FlagValues) error
+}
+
+// SubCommand wraps a nested Command node structure alongside its specific execution label token,
+// functioning as a typed relational bridge to facilitate chronological tree-traversal indexing.
+type SubCommand struct {
+	// Name defines the runtime string token identifier that activates this specific nested action payload.
+	// This token acts analogously to the top-level command name within its immediate parental scope.
+	Name string
+
+	// CMD points directly to the underlying Command node instance configuration governing this subcommand route.
+	CMD *Command
 }
 
 // ValidateAndHydrateFlags loops through registered constraints performing types translation and bounds enforcement.
@@ -150,9 +161,10 @@ func (c *Command) TriggerHelp() error {
 	// Render Available Subcommands if the command has children
 	if len(c.Subcommands) > 0 {
 		xclifn.PrintStdout("\nAvailable Subcommands:")
-		for cname, sub := range c.Subcommands {
-			sub.Name = cname
-			xclifn.PrintStdout("  %-15s %s", sub.Name, sub.ShortDescription)
+
+		for _, subCMD := range c.Subcommands {
+			subCMD.CMD.Name = subCMD.Name
+			xclifn.PrintStdout("  %-15s %s", subCMD.CMD.Name, subCMD.CMD.ShortDescription)
 		}
 		xclifn.PrintStdout("")
 	}

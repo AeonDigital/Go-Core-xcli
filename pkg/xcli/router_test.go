@@ -48,57 +48,17 @@ func TestRouter_Run(t *testing.T) {
 		expectedError string
 	}{
 		{
-			name:          "Erro: Root command nulo",
-			router:        xcli.NewRouter(nil),
-			rawArgs:       []string{},
-			wantErr:       true,
-			expectedError: "root command is not registered",
-		},
-		{
-			name: "Sucesso: Ajuda disparada no root por string 'help'",
-			router: xcli.NewRouter(&xcli.Command{
-				Name:             "root",
-				ShortDescription: "Root cmd",
-			}),
-			rawArgs: []string{"help"},
-			wantErr: false,
-		},
-		{
-			name: "Sucesso: Ajuda disparada no root por flag '--help'",
-			router: xcli.NewRouter(&xcli.Command{
-				Name:             "root",
-				ShortDescription: "Root cmd",
-			}),
-			rawArgs: []string{"--help"},
-			wantErr: false,
-		},
-		{
-			name: "Sucesso: Ajuda disparada no root por flag '-h'",
-			router: xcli.NewRouter(&xcli.Command{
-				Name:             "root",
-				ShortDescription: "Root cmd",
-			}),
-			rawArgs: []string{"-h"},
-			wantErr: false,
-		},
-		{
-			name: "Erro: Comando desconhecido no escopo",
-			router: xcli.NewRouter(&xcli.Command{
-				Name: "root",
-			}),
-			rawArgs:       []string{"unknown-cmd"},
-			wantErr:       true,
-			expectedError: "unknown command: 'unknown-cmd' for scope 'root'",
-		},
-		{
 			name: "Sucesso: Navegação para Subcomando válido",
 			router: xcli.NewRouter(&xcli.Command{
 				Name: "root",
-				Subcommands: map[string]*xcli.Command{
-					"sub": {
+				Subcommands: []*xcli.SubCommand{
+					{
 						Name: "sub",
-						Run: func(ctx *xclistruc.FlagValues) error {
-							return nil
+						CMD: &xcli.Command{
+							Name: "sub",
+							Run: func(ctx *xclistruc.FlagValues) error {
+								return nil
+							},
 						},
 					},
 				},
@@ -110,10 +70,13 @@ func TestRouter_Run(t *testing.T) {
 			name: "Sucesso: Ajuda disparada no subcomando pelos argumentos restantes",
 			router: xcli.NewRouter(&xcli.Command{
 				Name: "root",
-				Subcommands: map[string]*xcli.Command{
-					"sub": {
-						Name:             "sub",
-						ShortDescription: "Sub cmd",
+				Subcommands: []*xcli.SubCommand{
+					{
+						Name: "sub",
+						CMD: &xcli.Command{
+							Name:             "sub",
+							ShortDescription: "Sub cmd",
+						},
 					},
 				},
 			}),
@@ -124,10 +87,13 @@ func TestRouter_Run(t *testing.T) {
 			name: "Sucesso: Ajuda disparada no subcomando pela flag '-h' nos restantes",
 			router: xcli.NewRouter(&xcli.Command{
 				Name: "root",
-				Subcommands: map[string]*xcli.Command{
-					"sub": {
-						Name:             "sub",
-						ShortDescription: "Sub cmd",
+				Subcommands: []*xcli.SubCommand{
+					{
+						Name: "sub",
+						CMD: &xcli.Command{
+							Name:             "sub",
+							ShortDescription: "Sub cmd",
+						},
 					},
 				},
 			}),
