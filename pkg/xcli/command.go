@@ -47,6 +47,13 @@ type SubCommand struct {
 	CMD *Command
 }
 
+// EmptyCMD empty SubCommand definition to allow create spaces between group of commands
+// in help list.
+var EmptyCMD = &SubCommand{
+	Name: "",
+	CMD:  nil,
+}
+
 // ValidateAndHydrateFlags loops through registered constraints performing types translation and bounds enforcement.
 //
 // It checks flag mandatory presence, injects fallback defaults allocation blocks, and leverages
@@ -163,6 +170,10 @@ func (c *Command) TriggerHelp() error {
 		xclifn.PrintStdout("\nAvailable Subcommands:")
 
 		for _, subCMD := range c.Subcommands {
+			if subCMD == EmptyCMD {
+				xclifn.PrintStdout("")
+				continue
+			}
 			subCMD.CMD.Name = subCMD.Name
 			xclifn.PrintStdout("  %-15s %s", subCMD.CMD.Name, subCMD.CMD.ShortDescription)
 		}

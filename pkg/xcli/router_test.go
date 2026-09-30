@@ -52,6 +52,7 @@ func TestRouter_Run(t *testing.T) {
 			router: xcli.NewRouter(&xcli.Command{
 				Name: "root",
 				Subcommands: []*xcli.SubCommand{
+					xcli.EmptyCMD,
 					{
 						Name: "sub",
 						CMD: &xcli.Command{

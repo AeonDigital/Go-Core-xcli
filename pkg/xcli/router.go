@@ -48,6 +48,10 @@ func (r *Router) Run(rawArgs []string) error {
 
 		match := false
 		for _, subCMD := range currentCmd.Subcommands {
+			if subCMD == EmptyCMD {
+				continue
+			}
+
 			if subCMD.Name == arg {
 				subCMD.CMD.Name = arg
 

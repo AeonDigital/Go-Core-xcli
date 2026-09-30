@@ -134,6 +134,7 @@ func TestCommandTriggerHelpEnforcesFullVisualRender(t *testing.T) {
 					ShortDescription: "Boot up system daemons",
 				},
 			},
+			xcli.EmptyCMD,
 		},
 		Flags: []xclistruc.Flag{
 			{
