@@ -1,6 +1,8 @@
 package xclistruc
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -45,6 +47,76 @@ func (c *FlagValues) SetInternalValues(values map[string]any) {
 func (c *FlagValues) Has(name string) bool {
 	_, exists := c.values[name]
 	return exists
+}
+
+// GetRawValue returns the raw value as a string.
+//
+// Returns empty string if the flag is absent. or not exists
+func (c *FlagValues) GetRawValueAsString(name string) string {
+	val, exists := c.values[name]
+	if !exists || val == nil {
+		return ""
+	}
+
+	switch v := val.(type) {
+	case string:
+		return v
+	case bool:
+		return strconv.FormatBool(v)
+	case int:
+		return strconv.Itoa(v)
+	case int64:
+		return strconv.FormatInt(v, 10)
+	case float64:
+		return strconv.FormatFloat(v, 'f', -1, 64)
+	case time.Duration:
+		return v.String()
+	case time.Time:
+		return v.Format(time.RFC3339)
+
+	// slices
+	case []string:
+		return strings.Join(v, ",")
+	case []bool:
+		s := make([]string, len(v))
+		for i, b := range v {
+			s[i] = strconv.FormatBool(b)
+		}
+		return strings.Join(s, ",")
+	case []int:
+		s := make([]string, len(v))
+		for i, n := range v {
+			s[i] = strconv.Itoa(n)
+		}
+		return strings.Join(s, ",")
+	case []int64:
+		s := make([]string, len(v))
+		for i, n := range v {
+			s[i] = strconv.FormatInt(n, 10)
+		}
+		return strings.Join(s, ",")
+	case []float64:
+		s := make([]string, len(v))
+		for i, f := range v {
+			s[i] = strconv.FormatFloat(f, 'f', -1, 64)
+		}
+		return strings.Join(s, ",")
+	case []time.Duration:
+		s := make([]string, len(v))
+		for i, d := range v {
+			s[i] = d.String()
+		}
+		return strings.Join(s, ",")
+	case []time.Time:
+		s := make([]string, len(v))
+		for i, t := range v {
+			s[i] = t.Format(time.RFC3339)
+		}
+		return strings.Join(s, ",")
+	default:
+		// fallback: representação genérica
+		return fmt.Sprintf("%v", v)
+	}
 }
 
 // Count return the total flags defined by the user in the terminal

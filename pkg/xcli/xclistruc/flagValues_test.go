@@ -98,6 +98,129 @@ func TestFlagValuesLifecycle(t *testing.T) {
 	// 1. PRIMITIVE TYPES VERIFICATION TRACKS
 	// ============================================================================
 
+	// GetRawValueAsString
+	if ctx.GetRawValueAsString("v_bool") != "true" {
+		t.Errorf("expected 'true' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_string"))
+	}
+	if ctx.GetRawValueAsString("v_string") != " GoCLI " {
+		t.Errorf("expected ' GoCLI ' (with spaces) in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_string"))
+	}
+	if ctx.GetRawValueAsString("v_int") != "42" {
+		t.Errorf("expected '42' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_string"))
+	}
+	// GetRawValueAsString - demais tipos
+	if ctx.GetRawValueAsString("v_int64") != "777666555444333222" {
+		t.Errorf("expected '777666555444333222' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_int64"))
+	}
+	if ctx.GetRawValueAsString("v_int64v2") != "777666555444333111" {
+		t.Errorf("expected '777666555444333111' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_int64v2"))
+	}
+	if ctx.GetRawValueAsString("v_float") != "3.14" {
+		t.Errorf("expected '3.14' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_float"))
+	}
+	if ctx.GetRawValueAsString("v_json") != `{"status":"ok"}` {
+		t.Errorf("expected JSON string in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_json"))
+	}
+	if ctx.GetRawValueAsString("v_duration") != (5 * time.Minute).String() {
+		t.Errorf("expected '%s' in GetRawValueAsString, got '%s'", (5 * time.Minute).String(), ctx.GetRawValueAsString("v_duration"))
+	}
+	if ctx.GetRawValueAsString("v_date") != now.Format(time.RFC3339) {
+		t.Errorf("expected date '%s' in GetRawValueAsString, got '%s'", now.Format(time.RFC3339), ctx.GetRawValueAsString("v_date"))
+	}
+	if ctx.GetRawValueAsString("v_time") != now.Format(time.RFC3339) {
+		t.Errorf("expected time '%s' in GetRawValueAsString, got '%s'", now.Format(time.RFC3339), ctx.GetRawValueAsString("v_time"))
+	}
+	if ctx.GetRawValueAsString("v_datetime") != now.Format(time.RFC3339) {
+		t.Errorf("expected datetime '%s' in GetRawValueAsString, got '%s'", now.Format(time.RFC3339), ctx.GetRawValueAsString("v_datetime"))
+	}
+	if ctx.GetRawValueAsString("v_email") != "test@aeon.digital" {
+		t.Errorf("expected 'test@aeon.digital' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_email"))
+	}
+	if ctx.GetRawValueAsString("v_path") != "/usr/local" {
+		t.Errorf("expected '/usr/local' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_path"))
+	}
+	if ctx.GetRawValueAsString("v_filename") != "main.go" {
+		t.Errorf("expected 'main.go' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_filename"))
+	}
+	if ctx.GetRawValueAsString("v_filepath") != "/usr/local/main.go" {
+		t.Errorf("expected '/usr/local/main.go' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_filepath"))
+	}
+	if ctx.GetRawValueAsString("v_dirname") != "bin" {
+		t.Errorf("expected 'bin' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_dirname"))
+	}
+	if ctx.GetRawValueAsString("v_dirpath") != "/usr/local/bin" {
+		t.Errorf("expected '/usr/local/bin' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_dirpath"))
+	}
+	if ctx.GetRawValueAsString("v_url") != "https://aeon.digital" {
+		t.Errorf("expected 'https://aeon.digital' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_url"))
+	}
+	if ctx.GetRawValueAsString("v_fullurl") != "https://aeon.digital" {
+		t.Errorf("expected 'https://aeon.digital' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_fullurl"))
+	}
+	if ctx.GetRawValueAsString("v_relativeurl") != "/api/v1" {
+		t.Errorf("expected '/api/v1' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_relativeurl"))
+	}
+
+	// Arrays / Slices
+	if ctx.GetRawValueAsString("v_string_arr") != "A,B" {
+		t.Errorf("expected 'A,B' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_string_arr"))
+	}
+	if ctx.GetRawValueAsString("v_int_arr") != "1,2" {
+		t.Errorf("expected '1,2' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_int_arr"))
+	}
+	if ctx.GetRawValueAsString("v_int64_arr") != "7776665554443332221,1222333444555666777" {
+		t.Errorf("expected '7776665554443332221,1222333444555666777' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_int64_arr"))
+	}
+	if ctx.GetRawValueAsString("v_float_arr") != "1.1,2.2" {
+		t.Errorf("expected '1.1,2.2' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_float_arr"))
+	}
+	if ctx.GetRawValueAsString("v_bool_arr") != "true,false" {
+		t.Errorf("expected 'true,false' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_bool_arr"))
+	}
+	if ctx.GetRawValueAsString("v_duration_arr") != (1 * time.Second).String() {
+		t.Errorf("expected '%s' in GetRawValueAsString, got '%s'", (1 * time.Second).String(), ctx.GetRawValueAsString("v_duration_arr"))
+	}
+	if ctx.GetRawValueAsString("v_date_arr") != now.Format(time.RFC3339) {
+		t.Errorf("expected '%s' in GetRawValueAsString, got '%s'", now.Format(time.RFC3339), ctx.GetRawValueAsString("v_date_arr"))
+	}
+	if ctx.GetRawValueAsString("v_time_arr") != now.Format(time.RFC3339) {
+		t.Errorf("expected '%s' in GetRawValueAsString, got '%s'", now.Format(time.RFC3339), ctx.GetRawValueAsString("v_time_arr"))
+	}
+	if ctx.GetRawValueAsString("v_datetime_arr") != now.Format(time.RFC3339) {
+		t.Errorf("expected '%s' in GetRawValueAsString, got '%s'", now.Format(time.RFC3339), ctx.GetRawValueAsString("v_datetime_arr"))
+	}
+	if ctx.GetRawValueAsString("v_email_arr") != "a@a.com" {
+		t.Errorf("expected 'a@a.com' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_email_arr"))
+	}
+	if ctx.GetRawValueAsString("v_path_arr") != "/path" {
+		t.Errorf("expected '/path' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_path_arr"))
+	}
+	if ctx.GetRawValueAsString("v_filename_arr") != "file.txt" {
+		t.Errorf("expected 'file.txt' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_filename_arr"))
+	}
+	if ctx.GetRawValueAsString("v_filepath_arr") != "/path/file.txt" {
+		t.Errorf("expected '/path/file.txt' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_filepath_arr"))
+	}
+	if ctx.GetRawValueAsString("v_dirname_arr") != "dir" {
+		t.Errorf("expected 'dir' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_dirname_arr"))
+	}
+	if ctx.GetRawValueAsString("v_dirpath_arr") != "/path/dir" {
+		t.Errorf("expected '/path/dir' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_dirpath_arr"))
+	}
+	if ctx.GetRawValueAsString("v_url_arr") != "http://a.com" {
+		t.Errorf("expected 'http://a.com' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_url_arr"))
+	}
+	if ctx.GetRawValueAsString("v_fullurl_arr") != "http://a.com" {
+		t.Errorf("expected 'http://a.com' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_fullurl_arr"))
+	}
+	if ctx.GetRawValueAsString("v_relativeurl_arr") != "/b" {
+		t.Errorf("expected '/b' in GetRawValueAsString, got '%s'", ctx.GetRawValueAsString("v_relativeurl_arr"))
+	}
+
+	//
+	//
+	//
+
 	// GetRawString
 	if ctx.GetRawString("v_string") != " GoCLI " {
 		t.Errorf("expected ' GoCLI ' (with spaces), got '%s'", ctx.GetRawString("v_string"))
