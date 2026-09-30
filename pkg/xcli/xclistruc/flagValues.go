@@ -2,6 +2,7 @@ package xclistruc
 
 import (
 	"fmt"
+	"maps"
 	"strconv"
 	"strings"
 	"time"
@@ -47,6 +48,13 @@ func (c *FlagValues) SetInternalValues(values map[string]any) {
 func (c *FlagValues) Has(name string) bool {
 	_, exists := c.values[name]
 	return exists
+}
+
+// GetRawValuesAsMap returns all defined values as a map.
+func (c *FlagValues) GetRawValuesAsMap() map[string]any {
+	copyMap := make(map[string]any, len(c.values))
+	maps.Copy(copyMap, c.values)
+	return copyMap
 }
 
 // GetRawValue returns the raw value as a string.
